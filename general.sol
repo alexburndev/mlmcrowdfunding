@@ -8,10 +8,11 @@ pragma solidity ^0.5.16;
     1 line 10%
     2 line 20%
     3 line 30%
-    bonus marketing up to 12 lines of 1%.
+    bonus marketing up to 8 lines of 1%.
     rules 1 connection opens 1 line additionally.
     20% to Project.
     Developerd by Alex Burn.
+    https://github.com/alexburndev/mlmcrowdfunding/blob/master/general.sol
 */
 
 library SafeMath {
@@ -312,18 +313,18 @@ contract MLMcrowdfunding is Ownable
     }
     
    
-    // Withdraw and lock funds
+    // Withdraw and lock funds 
     uint256 public fundsLockedtoWithdraw;
     uint256 public dateUntilFundsLocked;
     
-   /*
+   /* Removed as unnecessary
     function lockFunds(uint256 amount) public onlyOwner {
         // funds lock is active
         if (dateUntilFundsLocked > now) {
             require(amount > fundsLockedtoWithdraw);
         }
         fundsLockedtoWithdraw = amount;
-        dateUntilFundsLocked = now ; //+ 30 days; (для теста изменено)
+        dateUntilFundsLocked = now ; //+ 30 days; 
     }
     */
     
@@ -382,9 +383,9 @@ contract MLMcrowdfunding is Ownable
   
     
     uint8 l1 = 10;
-    uint8 l2 = 20;
-    uint8 l3 = 30;
-    uint8 l4_l12 = 1;
+    uint8 l2 = 15;
+    uint8 l3 = 20;
+    uint8 l4_l8 = 1;
     
      function changeLevel1( uint8 L1) public  onlyOwner  {
         l1 = L1;
@@ -396,8 +397,8 @@ contract MLMcrowdfunding is Ownable
     function changeLevel33( uint8 L3) public onlyOwner  {
         l3 = L3;
     } 
-    function changeLevels4_L12( uint8 L4_L12) public onlyOwner  {
-        l4_l12 = L4_L12;
+    function changeLevels4_L12( uint8 L4_L8) public onlyOwner  {
+        l4_l8 = L4_L8;
     } 
     
     
@@ -414,8 +415,8 @@ contract MLMcrowdfunding is Ownable
             return (l2, 0); 
         else if (level == 2)
             return (l3, 0);
-            else if (level < 12)
-                return (l4_l12, level);
+            else if (level < 8)
+                return (l4_l8, level);
         else             
             return (0,0);
     }
@@ -428,14 +429,14 @@ contract MLMcrowdfunding is Ownable
         UserData storage user = users[msg.sender];
         address payable userAddress = msg.sender;
         
-       // require(user.invested >= minAmountOfEthToBeEffectiveRefferal);
+        //require(user.invested >= minAmountOfEthToBeEffectiveRefferal);
         
         uint256 reward = 0;
         
         bool isUserUnactive = ((user.createdAt > 0 && (block.timestamp - user.createdAt) >= 365 days) && (user.effectiveRefUserCount < 12));
         
-        for(uint8 i = 0; i < 12;i++) {
-            // user can't get reward after level 12
+        for(uint8 i = 0; i < 8;i++) {
+            // user can't get reward after level 8
             if (i >= 12 && isUserUnactive) break;
             
             uint128 minUsersRequired;
@@ -467,10 +468,10 @@ contract MLMcrowdfunding is Ownable
     
     
  
-    address payable addressSupportProject = 0x1a08070FFE5695aB0Eb4612640EeC11bf2Cf58eE;
-    address payable addressAdv = 0x76E40e08e10c8D7D088b20D26349ec52932F8BC3;
-    address payable addressRes = 0x29E63748A1ae9Fe96adb28f88249057ad8bCBD8C; //Metamask
-    address payable addressPV = 0x9Ec7043eFb31E7ac8D2982204042EC4904780771; //New
+    address payable addressSupportProject = 0x1a08070FFE5695aB0Eb4612640EeC11bf2Cf58eE; //AB
+    address payable addressAdv = 0x1Aad1692AeF5743767f33733D64B75031AC9d365; //IL
+    address payable addressRes = 0xaE0043FFA867c758C432C81e4FF75F8f1D684A6e; //Project
+    address payable addressPV = 0xd6D4D00905aa8caF30Cc31FfB95D9A211cFb5039; //Work
     
     struct PayData {
         uint8 a;
@@ -481,8 +482,8 @@ contract MLMcrowdfunding is Ownable
     
     uint8 a = 10;
     uint8 b = 10; 
-    uint8 c = 20;
-    uint8 d = 0;
+    uint8 c = 30;
+    uint8 d = 10;
     
     
     
@@ -558,7 +559,7 @@ contract MLMcrowdfunding is Ownable
         
         UserData storage user = users[msg.sender];
         
-        // если новый пользователь - увеличиваем у партнёра кол-во привлечённых людей
+        // if a new user - increase the number of people involved with the partner
         bool isNewUser = user.createdAt == 0;
         if (isNewUser)  {
             users[ref].refUserCount++;
